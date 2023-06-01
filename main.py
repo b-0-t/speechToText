@@ -91,11 +91,8 @@ def query(data):
     response = requests.request("POST", API_URL, headers=headers, data=data)
     return json.loads(response.content.decode("utf-8"))
 
-data = query(bytes_data)
+data = query(f)
 
-
-
-data = query(bytes_data)
 
 # Extract the dictionary values
 
