@@ -81,7 +81,7 @@ if f is not None:
 	    st.error("More than 1 MB! Please use your own API")
 	    st.stop()
 
-
+API_TOKEN = "62697577-XXXXXXX-1b3d319fccf4"
 api_token = st.secrets["API_TOKEN"]
 
 headers = {"Authorization": f"Bearer {api_token}"}
