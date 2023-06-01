@@ -76,16 +76,15 @@ def Free_mode():
 
     api_token = st.secrets["API_TOKEN"]
 
+    headers = {"Authorization": f"Bearer {api_token}"}
+    API_URL = "https://api-inference.huggingface.co/models/facebook/wav2vec2-base-960h"
 
+    def query(data):
+        response = requests.request("POST", API_URL, headers=headers, data=data)
+        return json.loads(response.content.decode("utf-8"))
 
-    def query(payload, api_token):
-        headers = {"Authorization": f"Bearer {api_token}"}
-        API_URL = "https://api-inference.huggingface.co/models/facebook/wav2vec2-base-960h"
-        response = requests.post(API_URL, headers=headers, json=payload)
-        return response.json()
+    data = query(f)
 
-
-    data = query(f,api_token)
 
     # Extract the dictionary values
 
