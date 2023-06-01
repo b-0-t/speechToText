@@ -74,44 +74,44 @@ def Free_mode():
             st.stop()
 
 
-    api_token = st.secrets["API_TOKEN"]
+        api_token = st.secrets["API_TOKEN"]
 
-    headers = {"Authorization": f"Bearer {api_token}"}
-    API_URL = "https://api-inference.huggingface.co/models/facebook/wav2vec2-base-960h"
+        headers = {"Authorization": f"Bearer {api_token}"}
+        API_URL = "https://api-inference.huggingface.co/models/facebook/wav2vec2-base-960h"
 
-    def query(data):
-        response = requests.request("POST", API_URL, headers=headers, data=data)
-        return json.loads(response.content.decode("utf-8"))
+        def query(data):
+            response = requests.request("POST", API_URL, headers=headers, data=data)
+            return json.loads(response.content.decode("utf-8"))
 
-    data = query(f)
-
-
-    # Extract the dictionary values
-
-    values_view = data.values()
-    value_iterator = iter(values_view)
-    text_value = next(value_iterator)
-
-    # Convert all cases to lowercase
-
-    text_value = text_value.lower()
-
-    # Print the output to your Streamlit app
-
-    st.success(text_value)
+        data = query(f)
 
 
-    st.download_button(
-    "Download the transcription",
-    text_value,
-    file_name=None,
-    mime=None,
-    key=None,
-    help=None,
-    on_click=None,
-    args=None,
-    kwargs=None,
-        )
+        # Extract the dictionary values
+
+        values_view = data.values()
+        value_iterator = iter(values_view)
+        text_value = next(value_iterator)
+
+        # Convert all cases to lowercase
+
+        text_value = text_value.lower()
+
+        # Print the output to your Streamlit app
+
+        st.success(text_value)
+
+
+        st.download_button(
+        "Download the transcription",
+        text_value,
+        file_name=None,
+        mime=None,
+        key=None,
+        help=None,
+        on_click=None,
+        args=None,
+        kwargs=None,
+            )
 
 
 Free_mode()
