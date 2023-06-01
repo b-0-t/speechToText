@@ -2,15 +2,7 @@ import requests
 import streamlit as st
 import os
 
-def query(payload, model_id, api_token):
-	headers = {"Authorization": f"Bearer {api_token}"}
-	API_URL = f"https://api-inference.huggingface.co/models/{model_id}"
-	response = requests.post(API_URL, headers=headers, json=payload)
-	return response.json()
 
-model_id = "distilbert-base-uncased"
-api_token = "hf_XXXXXXXX" # get yours at hf.co/settings/tokens
-data = query("The goal of life is [MASK].", model_id, api_token)
 
 
 
@@ -53,64 +45,64 @@ def main():
 
     pages[page]()
 
-f = st.file_uploader("", type=[".wav"])
 
 
-st.info(
+def Free_mode():
+    # ADD CODE FOR DEMO HERE
+    f = st.file_uploader("", type=[".wav"])
+    st.info(
                 f"""
                         👆 Upload a .wav file. Or try a sample: [Wav sample 01](https://github.com/CharlyWargnier/CSVHub/blob/main/Wave_files_demos/Welcome.wav?raw=true) | [Wav sample 02](https://github.com/CharlyWargnier/CSVHub/blob/main/Wave_files_demos/The_National_Park.wav?raw=true)
                         """
             )
+    if f is not None:
+        path_in = f.name
+        # Get file size from buffer
+        # Source: https://stackoverflow.com/a/19079887
+        old_file_position = f.tell()
+        f.seek(0, os.SEEK_END)
+        getsize = f.tell()  # os.path.getsize(path_in)
+        f.seek(old_file_position, os.SEEK_SET)
+        getsize = round((getsize / 1000000), 1)
+        st.caption("The size of this file is: " + str(getsize) + "MB")
 
-if f is not None:
-	path_in = f.name
-	# Get file size from buffer
-	# Source: https://stackoverflow.com/a/19079887
-	old_file_position = f.tell()
-	f.seek(0, os.SEEK_END)
-	getsize = f.tell()  # os.path.getsize(path_in)
-	f.seek(old_file_position, os.SEEK_SET)
-	getsize = round((getsize / 1000000), 1)
-	st.caption("The size of this file is: " + str(getsize) + "MB")
-
-
-	if getsize < 2:  # File more than 2MB
-	    st.success("OK, less than 1 MB")
-
-	else:
-	    st.error("More than 1 MB! Please use your own API")
-	    st.stop()
-
-API_TOKEN = "62697577-XXXXXXX-1b3d319fccf4"
-api_token = st.secrets["API_TOKEN"]
-
-headers = {"Authorization": f"Bearer {api_token}"}
-API_URL = "https://api-inference.huggingface.co/models/facebook/wav2vec2-base-960h"
-
-def query(data):
-    response = requests.request("POST", API_URL, headers=headers, data=data)
-    return json.loads(response.content.decode("utf-8"))
-
-data = query(f)
+        if getsize < 2:  # File more than 2MB
+            st.success("OK, less than 1 MB")
+            
+        else:
+            st.error("More than 1 MB! Please use your own API")
+            st.stop()
 
 
-# Extract the dictionary values
-
-values_view = data.values()
-value_iterator = iter(values_view)
-text_value = next(value_iterator)
-
-# Convert all cases to lowercase
-
-text_value = text_value.lower()
-
-# Print the output to your Streamlit app
-
-st.success(text_value)
+    api_token = st.secrets["API_TOKEN"]
 
 
 
-st.download_button(
+    def query(payload, api_token):
+        headers = {"Authorization": f"Bearer {api_token}"}
+        API_URL = "https://api-inference.huggingface.co/models/facebook/wav2vec2-base-960h"
+        response = requests.post(API_URL, headers=headers, json=payload)
+        return response.json()
+
+
+    data = query(f,api_token)
+
+    # Extract the dictionary values
+
+    values_view = data.values()
+    value_iterator = iter(values_view)
+    text_value = next(value_iterator)
+
+    # Convert all cases to lowercase
+
+    text_value = text_value.lower()
+
+    # Print the output to your Streamlit app
+
+    st.success(text_value)
+
+
+    st.download_button(
     "Download the transcription",
     text_value,
     file_name=None,
@@ -120,4 +112,4 @@ st.download_button(
     on_click=None,
     args=None,
     kwargs=None,
-)
+        )
