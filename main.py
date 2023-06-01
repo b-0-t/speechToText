@@ -113,3 +113,5 @@ def Free_mode():
     args=None,
     kwargs=None,
         )
+
+ Free_mode()
