@@ -63,23 +63,23 @@ st.info(
             )
 
 if f is not None:
-        path_in = f.name
-        # Get file size from buffer
-        # Source: https://stackoverflow.com/a/19079887
-        old_file_position = f.tell()
-        f.seek(0, os.SEEK_END)
-        getsize = f.tell()  # os.path.getsize(path_in)
-        f.seek(old_file_position, os.SEEK_SET)
-        getsize = round((getsize / 1000000), 1)
-        st.caption("The size of this file is: " + str(getsize) + "MB")
+	path_in = f.name
+	# Get file size from buffer
+	# Source: https://stackoverflow.com/a/19079887
+	old_file_position = f.tell()
+	f.seek(0, os.SEEK_END)
+	getsize = f.tell()  # os.path.getsize(path_in)
+	f.seek(old_file_position, os.SEEK_SET)
+	getsize = round((getsize / 1000000), 1)
+	st.caption("The size of this file is: " + str(getsize) + "MB")
 
 
-if getsize < 2:  # File more than 2MB
-    st.success("OK, less than 1 MB")
-            
-else:
-    st.error("More than 1 MB! Please use your own API")
-    st.stop()
+	if getsize < 2:  # File more than 2MB
+	    st.success("OK, less than 1 MB")
+
+	else:
+	    st.error("More than 1 MB! Please use your own API")
+	    st.stop()
 
 
 api_token = st.secrets["API_TOKEN"]
